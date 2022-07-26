@@ -7,7 +7,7 @@ Given source data, generate:
 3. Dose 
 4. 인종별
 
-참고사항: 엑셀 컬럼 제목들은 중요하지 않으니 (예: 'Subject number'를 아무 문자열로 표현 가능 `0-9한글english.,/;:-+(){}[]!@#$%&*~`등), 컬럼들의 의미는 아래와같이 순서대로 매칭 되있어야합니다.
+참고사항: 엑셀 컬럼 제목들은 중요하지 않으니 (예: 'Subject number'를 아무 문자열로 표현 가능 `0-9한글english.,/;:-+(){}[]<>"'!@#$%^&*~`등), 컬럼들의 의미는 아래와같이 순서대로 매칭 되있어야합니다.
 
 **source data (.xlsx) 제목 순서**
 
@@ -19,6 +19,6 @@ Given source data, generate:
 * $^{2}$컬럼 G가 마지막으로 읽히는 컬럼입니다.
 
 **INSTRUCTIONS**
-1. [https://mybinder.org/v2/gh/medisafepv/GenerateTables/main](https://mybinder.org/v2/gh/medisafepv/GenerateTables/main)
 
+1. [https://mybinder.org/v2/gh/medisafepv/GenerateTables/main](https://mybinder.org/v2/gh/medisafepv/GenerateTables/main)
 2. 왼쪽 파일 탐색기 패널에서 `generate_tables.ipynb` 더블클릭
