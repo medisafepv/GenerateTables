@@ -19,6 +19,6 @@ Given source data, generate:
 * $^{2}$컬럼 G가 마지막으로 읽히는 컬럼입니다.
 
 **INSTRUCTIONS**
-1. []()
+1. [https://mybinder.org/v2/gh/medisafepv/GenerateTables/main](https://mybinder.org/v2/gh/medisafepv/GenerateTables/main)
 
 2. 왼쪽 파일 탐색기 패널에서 `generate_tables.ipynb` 더블클릭
