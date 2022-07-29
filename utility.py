@@ -180,9 +180,49 @@ def check_unit(df):
     df_unit = df_unit.rename(columns={df.columns[5] : "튜여기간 (days)"})
     return df_unit
 
+def check_binary(df_in):   
+    df = df_in.copy()
+    cleaned = [x for x in df[df.columns[1]] if str(x) != 'nan']
+
+    while len(pd.unique(cleaned)) > 2:
+        print("Column '{}' is not binary: ".format(df.columns[1]), end="")
+        print(pd.unique(cleaned))
+
+        choice = input("\t모드를 숫자로 선택 후 'Enter'키로 이동하세요:\n\t1) 제목 삭제 모드 (모든 매치 제거) \n\t2) 제목 수정 모드 (오타인 경우) \nEnter: ")
+
+        if choice == "1":
+            problem_rows = input("\t\t(정확히) 일치하는 행 제거: " )
+            df = df.loc[~df[df.columns[1]].str.contains(problem_rows, regex=False)]
+
+            cleaned = [x for x in df[df.columns[1]] if str(x) != 'nan']
+            if len(pd.unique(cleaned)) > 2:
+                print("Binary 처리 실패. '{}'".format(df.columns[1]))
+                print(pd.unique(cleaned))
+                df = check_binary(df)
+
+        elif choice == "2":
+            remove = input("\t제거할 문자열: ")
+            value = input("\t대체할 문자열: ")
+            df[df.columns[1]] = df[df.columns[1]].str.replace(remove, value, regex=False)
+
+            cleaned = [x for x in df[df.columns[1]] if str(x) != 'nan']
+            if len(pd.unique(cleaned)) > 2:
+                print("Binary 처리 실패. '{}'".format(df.columns[1]))
+                print(pd.unique(cleaned))
+                df = check_binary(df)
+
+        else:
+            print("Enter 1 or 2")
+            
+        cleaned = [x for x in df[df.columns[1]] if str(x) != 'nan']
+    
+    return df
+
+
 def process_source_data(df_in):
     df_in = process_values(df_in)
     df_in = check_mistakes(df_in)
+    df_in = check_binary(df_in)
     return check_unit(df_in)
 
 def generate_duration(df_in, dp=2, compute_total=True):
