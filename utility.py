@@ -149,15 +149,12 @@ def change_unit(df, unit=""):
         
     elif unit == "5":
         print("**Custom Unit**")
-        divisor = input("    In 1 unit of <custom unit> how many days are there?: ")
+        factor = input("    In 1 unit of <custom unit> how many days are there?: ")
         
-        while not divisor.isdigit():
-            divisor = input("    Please enter a number: ")
+        while not factor.isdigit():
+            factor = input("    Please enter a number: ")
         
-        df[df.columns[5]] = df[df.columns[5]] * float(divisor)
-        
-        name = input("    Unit name: ")
-        df = df.rename(columns={df.columns[5] : "투여기간 ({})".format(name)})
+        df[df.columns[5]] = df[df.columns[5]] * float(factor)
 
     else:
         print("'{}' 단위:".format(df.columns[5]))
@@ -179,12 +176,8 @@ def check_unit(df):
     '''
     
     '''
-    old_name = df.columns[5]
-    
     df_unit = change_unit(df)
-
-    # if column header not already changed, change it
-    df_unit = df_unit.rename(columns={old_name : "튜여기간 (days)"})
+    df_unit = df_unit.rename(columns={df.columns[5] : "튜여기간 (days)"})
     return df_unit
 
 def process_source_data(df_in):
@@ -221,13 +214,15 @@ def generate_duration(df_in, dp=2, compute_total=True):
         duration = pd.concat([duration, total_row], ignore_index=True)
         
         duration["Patients"] = duration["Patients"].astype("int64")
+        
+    duration = duration.round({"Patient Year of Exposure (PYE)" : dp})
     return duration
 
 
 def process_missing_gender(gender_df):
     '''
     '''
-    # Added switched variabl due to later use for count aggregation
+    # Added switched variable due to later use for count aggregation
     switched = ""
     
     gender = gender_df.copy(deep=True)
@@ -261,7 +256,6 @@ def process_missing_gender(gender_df):
                 switched = "M"
 
             else:
-                #
                 print("성별 컬럼에 Male (M)이나 Female (F)은 둘중에 하나 필요합니다.")
                 raise StopExecution
 
@@ -366,6 +360,7 @@ def generate_dose(df_in, dp=2, compute_total=True):
         
         duration["Patients"] = duration["Patients"].astype("int64")
         
+    duration = duration.round({"Patient Year of Exposure (PYE)" : dp})
     return duration
 
 def process_digits(list_in):
